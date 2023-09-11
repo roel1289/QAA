@@ -646,7 +646,20 @@ output of the files are found: ```/projects/bgmp/roel/bioinfo/Bi623/QAA/part2/tr
 creating new file containing the data
 ```zcat 15_3C_mbnl_S11_L008_R1_001.cut.trimmed.fastq.gz | sed -n '2~4p' | awk '{print length($0)}' | sort | uniq -c | sort -n > ../readLenDist.txt```
 
+```zcat 15_3C_mbnl_S11_L008_R2_001.cut.trimmed.fastq.gz | sed -n '2~4p' | awk '{print length($0)}' | sort | uniq -c | sort -n > ../readLenDist15_3C_mbnl_S11_L008_R2.txt```
+
+```zcat 24_4A_control_S18_L008_R1_001.cut.trimmed.fastq.gz | sed -n '2~4p' | awk '{print length($0)}' | sort | uniq -c | sort -n > ../readLenDist24_4A_control_S18_L008_R1.txt```
+
+```zcat 24_4A_control_S18_L008_R2_001.cut.trimmed.fastq.gz | sed -n '2~4p' | awk '{print length($0)}' | sort | uniq -c | sort -n > ../readLenDist24_4A_control_S18_L008_R2.txt```
+
+
 graphing this distribution in ```/projects/bgmp/roel/bioinfo/Bi623/QAA/part2/readLengthDist.py```
+
+commands used to graph the two samples and each of their reads:
+```
+./readLengthDist.py -R1 readLenDist15_3C_mbnl_S11_L008_R1.txt -R2 readLenDist15_3C_mbnl_S11_L008_R2.txt -o 15_3C_mbnl_S11_L008ReadLenDist.png
+./readLengthDist.py -R1 readLenDist24_4A_control_S18_L008_R1.txt -R2 readLenDist24_4A_control_S18_L008_R2.txt -o 24_4A_control_S18_L008ReadLenDist.png
+```
 
 
 ### 9/10/23
@@ -791,6 +804,8 @@ __alignment_not_unique  325255
 ```
 
 Now running bash script because it takes a while : ```/projects/bgmp/roel/bioinfo/Bi623/QAA/part3/htseqScript.sh```
+
+- note: had to do ```cat slurm-54053.out | grep "__alignment_not_unique"``` to get each of the cases
 ```
 15_3C_mbnl_S11_L008Aligned.out.sam, stranded=yes
 __no_feature    6608774
@@ -819,6 +834,8 @@ __ambiguous     151638
 __too_low_aQual 11100
 __not_aligned   349222
 __alignment_not_unique  481470
-
-
 ```
+
+
+* use ICA4 for bash command to count amount of genes that map to a feature:
+
