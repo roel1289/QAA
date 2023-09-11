@@ -647,3 +647,178 @@ creating new file containing the data
 ```zcat 15_3C_mbnl_S11_L008_R1_001.cut.trimmed.fastq.gz | sed -n '2~4p' | awk '{print length($0)}' | sort | uniq -c | sort -n > ../readLenDist.txt```
 
 graphing this distribution in ```/projects/bgmp/roel/bioinfo/Bi623/QAA/part2/readLengthDist.py```
+
+
+### 9/10/23
+- need to finish Part 2 question 7, put moving on to part 3 first:
+
+#### Part 3:
+- installing following software onto QAA conda environment:
+- star
+- numpy
+- matplotlib
+- htseq
+
+```
+conda activate bgmp-QAA
+conda install -c bioconda star
+conda install numpy
+conda install matplotlib
+conda install -c bioconda htseq
+```
+
+The mouse files used: and downloaded to ```/projects/bgmp/roel/bioinfo/Bi623/QAA/part3```
+
+```
+wget https://ftp.ensembl.org/pub/release-110/fasta/mus_musculus/dna/Mus_musculus.GRCm39.dna.primary_assembly.fa.gz
+wget https://ftp.ensembl.org/pub/release-110/gtf/mus_musculus/Mus_musculus.GRCm39.110.gtf.gz
+
+```
+
+######  using bash script called ```starScript1.sh``
+- NOTE: look at Bi621 PS8 for instructions usign STAR
+- made this directory to store the alignment:  ```/projects/bgmp/roel/bioinfo/Bi623/QAA/part3/Mus_musculus.GRCm39.ens110.STAR_2.7.10b```
+- naming file: the name of the assembly (e.g. “Danio_rerio.GRCz11.dna”)the release of Ensembl (e.g. “ens109”) and the version of STAR (e.g. “STAR_2.7.10b”).
+- unzip files fasta files: ```gunzip```
+
+slurm.out:
+```
+        /projects/bgmp/roel/miniconda3/envs/bgmp_star/bin/STAR-avx2 --runThreadN 8 --runMode genomeGenerate --genomeDir /projects/bgmp/roel/bioinfo/Bi623/QAA/part3/Mus_musculus.GRCm39.ens110.STAR_2.7.10b --genomeFastaFiles /projects/bgmp/roel/bioinfo/Bi623/QAA/part3/Mus_musculus.GRCm39.dna.primary_assembly.fa --sjdbGTFfile /projects/bgmp/roe
+l/bioinfo/Bi623/QAA/part3/Mus_musculus.GRCm39.110.gtf
+        STAR version: 2.7.10b   compiled: 2023-05-25T06:56:23+0000 :/opt/conda/conda-bld/star_1684997536154/work/source
+Sep 10 13:28:36 ..... started STAR run
+Sep 10 13:28:36 ... starting to generate Genome files
+Sep 10 13:29:16 ..... processing annotations GTF
+Sep 10 13:29:29 ... starting to sort Suffix Array. This may take a long time...
+Sep 10 13:29:43 ... sorting Suffix Array chunks and saving them to disk...
+Sep 10 13:39:31 ... loading chunks from disk, packing SA...
+Sep 10 13:40:40 ... finished generating suffix array
+Sep 10 13:40:40 ... generating Suffix Array index
+Sep 10 13:43:24 ... completed Suffix Array index
+Sep 10 13:43:24 ..... inserting junctions into the genome indices
+Sep 10 13:45:57 ... writing Genome to disk ...
+Sep 10 13:45:57 ... writing Suffix Array to disk ...
+Sep 10 13:46:12 ... writing SAindex to disk
+Sep 10 13:46:13 ..... finished successfully
+        Command being timed: "STAR --runThreadN 8 --runMode genomeGenerate --genomeDir /projects/bgmp/roel/bioinfo/Bi623/QAA/part3/Mus_musculus.GRCm39.ens110.STAR_2.7.10b --genomeFastaFiles /projects/bgmp/roel/bioinfo/Bi623/QAA/part3/Mus_musculus.GRCm39.dna.primary_assembly.fa --sjdbGTFfile /projects/bgmp/roel/bioinfo/Bi623/QAA/part3/Mus_mus
+culus.GRCm39.110.gtf"
+        User time (seconds): 5223.38
+        System time (seconds): 50.05
+        Percent of CPU this job got: 498%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 17:37.25
+      ...
+        Exit status: 0
+~
+
+```
+
+##### using bash script called ```starScript2.sh```
+- for 15_3C sample slurm out:
+```
+        STAR --runThreadN 8 --runMode alignReads --outFilterMultimapNmax 3 --outSAMunmapped Within KeepPairs --alignIntronMax 1000000 --alignMatesGapMax 1000000 --readFilesCommand zcat --readFilesIn /projects/bgmp/roel/bioinfo/Bi623/QAA/part2/trimmed/15_3C_mbnl_S11_L008_R1_001.cut.trimmed.fastq.gz /projects/bgmp/roel/bioinfo/Bi623/QAA/part2/trimmed/15_3C_mbnl_S11_L008_R2_001.cut.trimmed.fastq.gz --genomeDir /projects/bgmp/roel/bioinfo/Bi623/QAA/part3/Mus_musculus.GRCm39.ens110.STAR_2.7.10b --outFileNamePrefix 15_3C_mbnl_S11_L008
+        STAR version: 2.7.10b   compiled: 2022-11-01T09:53:26-04:00 :/home/dobin/data/STAR/STARcode/STAR.master/source
+Sep 10 14:55:04 ..... started STAR run
+Sep 10 14:55:04 ..... loading genome
+Sep 10 14:55:42 ..... started mapping
+Sep 10 14:56:41 ..... finished mapping
+Sep 10 14:56:42 ..... finished successfully
+        Command being timed: "STAR --runThreadN 8 --runMode alignReads --outFilterMultimapNmax 3 --outSAMunmapped Within KeepPairs --alignIntronMax 1000000 --alignMatesGapMax 1000000 --readFilesCommand zcat --readFilesIn /projects/bgmp/roel/bioinfo/Bi623/QAA/part2/trimmed/15_3C_mbnl_S11_L008_R1_001.cut.trimmed.fastq.gz /projects/bgmp/roel/bioinfo/Bi623/QAA/part2/trimmed/15_3C_mbnl_S11_L008_R2_001.cut.trimmed.fastq.gz --genomeDir /projects/bgmp/roel/bioinfo/Bi623/QAA/part3/Mus_musculus.GRCm39.ens110.STAR_2.7.10b --outFileNamePrefix 15_3C_mbnl_S11_L008"
+        User time (seconds): 398.41
+        System time (seconds): 9.63
+        Percent of CPU this job got: 418%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 1:37.53
+       ...
+        Exit status: 0
+
+```
+- for 24_4A sample slurm out:
+```
+        STAR --runThreadN 8 --runMode alignReads --outFilterMultimapNmax 3 --outSAMunmapped Within KeepPairs --alignIntronMax 1000000 --alignMatesGapMax 1000000 --readFilesCommand zcat --readFilesIn /projects/bgmp/roel/bioinfo/Bi623/QAA/part2/trimmed/24_4A_control_S18_L008_R1_001.cut.trimmed.fastq.gz /projects/bgmp/roel/bioinfo/Bi623/QAA/part2/trimmed/24_4A_control_S18_L008_R2_001.cut.trimmed.fastq.gz --genomeDir /projects/bgmp/roel/bioinfo/Bi623/QAA/part3/Mus_musculus.GRCm39.ens110.STAR_2.7.10b --outFileNamePrefix 24_4A_control_S18
+        STAR version: 2.7.10b   compiled: 2022-11-01T09:53:26-04:00 :/home/dobin/data/STAR/STARcode/STAR.master/source
+Sep 10 15:04:04 ..... started STAR run
+Sep 10 15:04:04 ..... loading genome
+Sep 10 15:05:32 ..... started mapping
+Sep 10 15:06:55 ..... finished mapping
+Sep 10 15:06:56 ..... finished successfully
+        Command being timed: "STAR --runThreadN 8 --runMode alignReads --outFilterMultimapNmax 3 --outSAMunmapped Within KeepPairs --alignIntronMax 1000000 --alignMatesGapMax 1000000 --readFilesCommand zcat --readFilesIn /projects/bgmp/roel/bioinfo/Bi623/QAA/part2/trimmed/24_4A_control_S18_L008_R1_001.cut.trimmed.fastq.gz /projects/bgmp/roel/bioinfo/Bi623/QAA/part2/trimmed/24_4A_control_S18_L008_R2_001.cut.trimmed.fastq.gz --genomeDir /projects/bgmp/roel/bioinfo/Bi623/QAA/part3/Mus_musculus.GRCm39.ens110.STAR_2.7.10b --outFileNamePrefix 24_4A_control_S18"
+        User time (seconds): 571.53
+        System time (seconds): 12.50
+        Percent of CPU this job got: 341%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 2:51.23
+      ...
+        Exit status: 0
+~
+```
+
+#### using PS8 parseSam.py to get count of mapped and unmapped reads:
+- for 15_3C sample slurm out:
+```
+Mapped reads: 14436368
+Unmapped reads: 400406
+        Command being timed: "./parseSam.py -f 15_3C_mbnl_S11_L008Aligned.out.sam"
+        User time (seconds): 15.46
+        System time (seconds): 2.41
+        Percent of CPU this job got: 92%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 0:19.34
+   ...
+        Exit status: 0
+```
+- for 24_4A sample slurm out:
+```
+Mapped reads: 19780620
+Unmapped reads: 710244
+        Command being timed: "./parseSam.py -f 24_4A_control_S18Aligned.out.sam"
+        User time (seconds): 21.50
+        System time (seconds): 3.34
+        Percent of CPU this job got: 99%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 0:25.05
+        ...
+        Exit status: 0
+```
+#### htseq-count to count reads that mapped to features(genes)
+
+```
+htseq-count 15_3C_mbnl_S11_L008Aligned.out.sam Mus_musculus.GRCm39.110.gtf --stranded=yes
+```
+
+output:
+```
+__no_feature    6608774
+__ambiguous     6210
+__too_low_aQual 13834
+__not_aligned   192826
+__alignment_not_unique  325255
+```
+
+Now running bash script because it takes a while : ```/projects/bgmp/roel/bioinfo/Bi623/QAA/part3/htseqScript.sh```
+```
+15_3C_mbnl_S11_L008Aligned.out.sam, stranded=yes
+__no_feature    6608774
+__ambiguous     6210
+__too_low_aQual 13834
+__not_aligned   192826
+__alignment_not_unique  325255
+
+24_4A_control_S18Aligned.out.sam, stranded=yes
+__no_feature    9046162
+__ambiguous     7178
+__too_low_aQual 11100
+__not_aligned   349222
+__alignment_not_unique  481470
+
+15_3C_mbnl_S11_L008Aligned.out.sam, stranded=reverse
+__no_feature    601623
+__ambiguous     119790
+__too_low_aQual 13834
+__not_aligned   192826
+__alignment_not_unique  325255
+
+24_4A_control_S18Aligned.out.sam, stranded=reverse
+__no_feature    874899
+__ambiguous     151638
+__too_low_aQual 11100
+__not_aligned   349222
+__alignment_not_unique  481470
+
+
+```
