@@ -32,6 +32,7 @@ The four files I will be working with:
 ```
 before I ran phredEncodingScript.sh I remembered I had to import bioinfo.py
 
+- phred encoding used bash script to run python script
 
 part1 
 1. 
@@ -835,7 +836,56 @@ __too_low_aQual 11100
 __not_aligned   349222
 __alignment_not_unique  481470
 ```
-
+### 9/12/23
 
 * use ICA4 for bash command to count amount of genes that map to a feature:
+- realized that my one htseq output file has all 4 files, so I will be sub-sectioning them: \\
 
+- ```15_3C_mbnl_S11_L008Aligned.out.sam, stranded=yes```
+```cat slurm-htseq.out | awk 'NR >= 1 && NR <= 57064 { print }' > htseq_15_3C_strandedyes.out```
+
+
+- ```24_4A_control_S18Aligned.out.sam, stranded=yes```
+```cat slurm-htseq.out | awk 'NR >= 57065 && NR <= 114156 { print }' > htseq_24_4A_strandedyes.out```
+
+- ```15_3C_mbnl_S11_L008Aligned.out.sam, stranded=reverse```
+```cat slurm-htseq.out | awk 'NR >= 114157 && NR <= 171220 { print }' > htseq_15_3C_strandedreverse.out```
+
+
+- ```24_4A_control_S18Aligned.out.sam, stranded=reverse```
+```cat slurm-htseq.out | awk 'NR >= 171221 && NR <= 228312 { print }' > htseq_24_4A_strandedreverse.out```
+
+#### Percentage of reads that map to features (parts from ICA4)
+
+reads that mapped:
+
+- htseq_15_3C_strandedyes.out
+```cat htseq_15_3C_strandedyes.out | grep -v "__" | awk '$2>0 {sum+=$2} END {print sum'``` = 271488 (genes that do NOT have 0 reads)
+
+
+- htseq_24_4A_strandedyes.out
+```cat htseq_24_4A_strandedyes.out | grep -v "__" | awk '$2>0 {sum+=$2} END {print sum}'``` = 350300
+
+
+- htseq_15_3C_strandedreverse.out
+```cat htseq_15_3C_strandedreverse.out | grep -v "__" | awk '$2>0 {sum+=$2} END
+ {print sum}'
+``` = 6165059
+
+- htseq_24_4A_strandedreverse.out
+```cat htseq_24_4A_strandedreverse.out | grep -v "__" | awk '$2>0 {sum+=$2} END 
+{print sum}'``` = 8377103
+
+
+Total reads:
+- htseq_15_3C_strandedyes.out
+```cat htseq_15_3C_strandedyes.out | awk '{sum+=$2} END {print sum}'``` = 7418387
+
+- htseq_24_4A_strandedyes.out
+```10245432```
+
+- htseq_15_3C_strandedreverse.out
+```7418387```
+
+- htseq_24_4A_strandedreverse.out
+```10245432```
