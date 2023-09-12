@@ -864,13 +864,16 @@ reads that mapped:
 
 
 - htseq_24_4A_strandedyes.out
-```cat htseq_24_4A_strandedyes.out | grep -v "__" | awk '$2>0 {sum+=$2} END {print sum}'``` = 350300
+```cat htseq_24_4A_strandedyes.out | grep -v "__" | awk '$2>0 {sum+=$2} END {print sum}'``` = 350300 
 
 
 - htseq_15_3C_strandedreverse.out
-```cat htseq_15_3C_strandedreverse.out | grep -v "__" | awk '$2>0 {sum+=$2} END
+```
+cat htseq_15_3C_strandedreverse.out | grep -v "__" | awk '$2>0 {sum+=$2} END
  {print sum}'
-``` = 6165059
+ ```
+
+ = 6165059
 
 - htseq_24_4A_strandedreverse.out
 ```cat htseq_24_4A_strandedreverse.out | grep -v "__" | awk '$2>0 {sum+=$2} END 
@@ -889,3 +892,22 @@ Total reads:
 
 - htseq_24_4A_strandedreverse.out
 ```10245432```
+
+
+
+Percentage of mapped reads:
+- htseq_15_3C_strandedyes.out
+271488/7418387 = 0.03659663 = 3.659663%
+
+- htseq_24_4A_strandedyes.out
+350300/10245432 = 0.03419085 = 3.419085%
+
+- htseq_15_3C_strandedreverse.out
+6165059/7418387 = 0.8310511 = 83.10511%
+
+- htseq_24_4A_strandedreverse.out
+8377103/10245432 = 0.8176427 = 81.76427%
+
+The data are from strand-specific libraries because (percentages above. ^)
+It is stranded and most of the reads came from the reverse strand
+since 80% of reads reads came from reverse 
