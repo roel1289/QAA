@@ -8,7 +8,17 @@ must begin module:
 module spider fastqc
 module load fastqc/0.11.5
 ```
+- here is my ouput for fastqc, seemed to take about 2 minutes:
+```
+    Command being timed: "fastqc -o /projects/bgmp/roel/bioinfo/Bi623/QAA/part1 /projects/bgmp/shared/2017_sequencing/demultiplexed/15_3C_mbnl_S11_L008_R1_001.fastq.gz /projects/bgmp/shared/2017_sequencing/demultiplexed/15_3C_mbnl_S11_L008_R2_001.fastq.gz /projects/bgmp/shared/2017_sequencing/demultiplexed/24_4A_control_S18_L008_R2_001.fastq.gz"
+        User time (seconds): 129.21
+        System time (seconds): 5.34
+        Percent of CPU this job got: 100%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 2:14.29
+        ...
+        Exit status: 0
 
+```
 
 
 
