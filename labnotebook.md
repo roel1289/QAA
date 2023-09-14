@@ -8,6 +8,11 @@ must begin module:
 module spider fastqc
 module load fastqc/0.11.5
 ```
+
+- here is the FastQC command used:
+```
+/usr/bin/time -v fastqc -o /projects/bgmp/roel/bioinfo/Bi623/QAA/part1 /projects/bgmp/shared/2017_sequencing/demultiplexed/15_3C_mbnl_S11_L008_R1_001.fastq.gz /projects/bgmp/shared/2017_sequencing/demultiplexed/15_3C_mbnl_S11_L008_R2_001.fastq.gz /projects/bgmp/shared/2017_sequencing/demultiplexed/24_4A_control_S18_L008_R1_001.fastq.gz /projects/bgmp/shared/2017_sequencing/demultiplexed/24_4A_control_S18_L008_R2_001.fastq.gz
+```
 - here is my ouput for fastqc, seemed to take about 2 minutes:
 ```
     Command being timed: "fastqc -o /projects/bgmp/roel/bioinfo/Bi623/QAA/part1 /projects/bgmp/shared/2017_sequencing/demultiplexed/15_3C_mbnl_S11_L008_R1_001.fastq.gz /projects/bgmp/shared/2017_sequencing/demultiplexed/15_3C_mbnl_S11_L008_R2_001.fastq.gz /projects/bgmp/shared/2017_sequencing/demultiplexed/24_4A_control_S18_L008_R2_001.fastq.gz"
